@@ -8,10 +8,6 @@ class Solution {
                 }
             }
         }
-        //if(mat.length / 2 != 0)
-       // return  sum - mat[mat.length/2][mat.length/2];
-       // else{
             return sum;
-       // }
     }
 }
