@@ -14,6 +14,8 @@
  * }
  */
 class Solution {
+    
+
     public List<Double> averageOfLevels(TreeNode root) {
         if(root == null) return new ArrayList<>();
     
