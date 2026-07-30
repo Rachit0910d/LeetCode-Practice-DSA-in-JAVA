@@ -7,11 +7,12 @@ class Solution {
     }
 
     for(int i : set) {
-      if(!set.contains(i-1)){
+      if(i == Integer.MIN_VALUE || !set.contains(i - 1)){
         int current = i;
         int length = 1;
 
-        while(set.contains(current+1)){
+        while(current != Integer.MAX_VALUE &&
+           set.contains(current + 1)){
           length++;
           current++;
         }
