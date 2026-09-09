@@ -4,19 +4,20 @@ class Solution {
 
         long ans = 0;
 
-        long start = 1000;
-        long commas = 1;
+        long s= 1000;
+        long cs = 1;
 
-        while (start <= n) {
+        while (s <= n) {
 
-            long end = start * 1000 - 1;
+            long e = s * 1000 - 1;
 
-            long last = Math.min(n, end);
+            long l = Math.min(n, e);
 
-            ans += (last - start + 1) * commas;
 
-            start *= 1000;
-            commas++;
+            ans += (l - s + 1)*cs;
+
+            s *= 1000;
+            cs++;
         }
 
         return ans;
