@@ -1,52 +1,63 @@
-class Solution {
-    public int maxTwoEvents(int[][] events) {
+import java.util.*;
 
-        // Sort by end time
-        Arrays.sort(events, (a, b) -> Integer.compare(a[1], b[1]));
+class Solution {
+
+    public int maxTwoEvents(int[][] events) {
 
         int n = events.length;
 
-        // maxValue[i] = maximum value among events[0...i]
-        int[] maxValue = new int[n];
+        // Sort by starting time
+        Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
 
-        maxValue[0] = events[0][2];
+        // suffixMax[i] = maximum value from i to n-1
+        int[] suffixMax = new int[n];
 
-        for (int i = 1; i < n; i++) {
-            maxValue[i] = Math.max(maxValue[i - 1], events[i][2]);
+        suffixMax[n - 1] = events[n - 1][2];
+
+        for (int i = n - 2; i >= 0; i--) {
+            suffixMax[i] = Math.max(
+                events[i][2],
+                suffixMax[i + 1]
+            );
         }
 
-        int maxAns = 0;
+        int ans = 0;
 
         for (int i = 0; i < n; i++) {
 
-            // Take only this event
-            maxAns = Math.max(maxAns, events[i][2]);
+            // Take event i
+            int value = events[i][2];
 
-            int currentStart = events[i][0];
+            // Find first event whose start > current end
+            int next = findNext(events, events[i][1]);
 
-            // Find the last event whose end < currentStart
-            int left = 0;
-            int right = i - 1;
-            int bestIndex = -1;
-
-            while (left <= right) {
-
-                int mid = left + (right - left) / 2;
-
-                if (events[mid][1] < currentStart) {
-                    bestIndex = mid;
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
-                }
+            // Take current + best compatible event
+            if (next < n) {
+                value += suffixMax[next];
             }
 
-            if (bestIndex != -1) {
-                int sum = events[i][2] + maxValue[bestIndex];
-                maxAns = Math.max(maxAns, sum);
+            ans = Math.max(ans, value);
+        }
+
+        return ans;
+    }
+
+    private int findNext(int[][] events, int end) {
+
+        int left = 0;
+        int right = events.length;
+
+        while (left < right) {
+
+            int mid = left + (right - left) / 2;
+
+            if (events[mid][0] > end) {
+                right = mid;
+            } else {
+                left = mid + 1;
             }
         }
 
-        return maxAns;
+        return left;
     }
 }
