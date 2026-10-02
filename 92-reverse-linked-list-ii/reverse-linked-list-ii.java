@@ -1,49 +1,35 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if(head == null || head.next == null){
+
+        if (head == null || left == right) {
             return head;
         }
 
-        if(left == right){
-                return head;
-            }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
 
-            ListNode current = head;
-            ListNode prev = null;
+        ListNode prev = dummy;
 
-            for (int i = 0; current != null && i < left - 1; i++) {
-                prev = current;
-                current = current.next;
-            }
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
 
-            ListNode last = prev;
-            ListNode newEnd = current;
-            ListNode next = current.next;
-            for (int i = 0; current != null && i < right - left + 1; i++) {
-                current.next = prev;
-                prev = current;
-                current = next;
-                if(next != null){
-                    next = next.next;
-                }
-            }
+        ListNode curr = prev.next;
+        ListNode previous = null;
 
-            if(last != null){
-                last.next = prev;
-            } else{
-                head = prev;
-            }
-            newEnd.next = current;
-            return head;
+        for (int i = 0; i <= right - left; i++) {
+            ListNode next = curr.next;
+
+            curr.next = previous;
+            previous = curr;
+            curr = next;
+        }
+
+        ListNode leftNode = prev.next;
+
+        prev.next = previous;
+        leftNode.next = curr;
+
+        return dummy.next;
     }
 }
