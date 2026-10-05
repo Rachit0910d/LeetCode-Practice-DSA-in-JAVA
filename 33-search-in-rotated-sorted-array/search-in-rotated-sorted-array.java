@@ -48,10 +48,10 @@ class Solution {
                 return m;
             } else if(m > l && nums[m] < nums[m - 1]){
                 return m - 1;
-            } else if(nums[l] >= nums[m]){
-                r = m - 1;
-            } else{
+            } else if(nums[l] <= nums[m]){
                 l = m + 1;
+            } else{
+                r = m - 1;
             }
         }
 
